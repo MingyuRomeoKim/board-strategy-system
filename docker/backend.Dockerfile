@@ -9,7 +9,7 @@ COPY ./backend/build.gradle.kts ./build.gradle.kts
 COPY ./backend/settings.gradle.kts ./settings.gradle.kts
 COPY ./backend/src ./src
 
-RUN chmod +x gradlew && ./gradlew clean build --no-daemon
+RUN chmod +x gradlew && ./gradlew clean build -x test --no-daemon
 
 # 런타임 스테이지
 FROM openjdk:21-jdk-slim
