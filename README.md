@@ -1,6 +1,18 @@
 # 사전과제
 
+## 구동 방법
+
+```shell
+
+git clone https://github.com/MingyuRomeoKim/board-strategy-system.git
+cd board-stategy-system
+docker-compose up -d
+```
+
 ## 프로젝트 설계
+- 리스트 만 구현하라고 적혀있어서 리스트만 구현하였으나, 404 내용을 담기 위하여 detail도 함께 담았습니다.
+- H2 Inmemory 사용하라 하였지만, Test Profile에서 Inmemory로 하고 Docker에서 H2를 별도로 사용하였습니다.
+- Redis를 통한 간단한 캐싱 적용하였습니다.
 
 ### 전체 프로젝트 구조
 ```
