@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Post } from '../types/post';
 import axiosInstance from '../api/axiosInstance';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
 export function useInfiniteScroll() {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(0);
-    const [isEnd, setIsEnd] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isEnd, setIsEnd] = useState(false);
 
     const observerRef = useRef<IntersectionObserver | null>(null);
     const targetRef = useRef<HTMLDivElement | null>(null);
@@ -17,46 +17,57 @@ export function useInfiniteScroll() {
         if (loading || isEnd) return;
 
         setLoading(true);
+
         try {
             const res = await axiosInstance.get<Post[]>(
-                `/posts?strategy=infinite&page=${page + 1}&size=${PAGE_SIZE}`
+                `/posts?strategy=infinite&page=${page}&size=${PAGE_SIZE}`
             );
-            if (res.data.length < PAGE_SIZE) {
+
+            const newPosts = res.data;
+
+            if (newPosts.length < PAGE_SIZE) {
                 setIsEnd(true);
             }
-            setPosts((prev) => [...prev, ...res.data]);
+
+            setPosts((prev) => [...prev, ...newPosts]);
             setPage((prev) => prev + 1);
-        } catch (e) {
-            console.error('무한스크롤 로딩 실패', e);
+        } catch (err) {
+            console.error('🚨 게시글 로딩 실패:', err);
         } finally {
             setLoading(false);
         }
-    }, [loading, isEnd, page]);
+    }, [page, loading, isEnd]);
 
     useEffect(() => {
-        loadMore(); // 첫 로딩
+        loadMore(); // 첫 페이지 자동 로딩
     }, []);
 
-    useEffect(() => {
-        if (!targetRef.current) return;
+    const setTargetRef = useCallback((node: HTMLDivElement | null) => {
+        if (observerRef.current) observerRef.current.disconnect();
 
-        observerRef.current = new IntersectionObserver(([entry]) => {
-            if (entry.isIntersecting) {
-                loadMore();
-            }
-        });
+        if (node) {
+            observerRef.current = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        loadMore();
+                    }
+                },
+                {
+                    root: null,
+                    rootMargin: '0px 0px 200px 0px',
+                    threshold: 0.1,
+                }
+            );
+            observerRef.current.observe(node);
+        }
 
-        observerRef.current.observe(targetRef.current);
-
-        return () => {
-            observerRef.current?.disconnect();
-        };
+        targetRef.current = node;
     }, [loadMore]);
 
     return {
         posts,
-        targetRef, // 마지막 div에 연결해야 함
-        isEnd,
+        targetRef: setTargetRef,
         loading,
+        isEnd,
     };
 }

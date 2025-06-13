@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Post } from '../types/post';
 import axiosInstance from '../api/axiosInstance';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 20;
 
 export function usePagingStrategy() {
     const [posts, setPosts] = useState<Post[]>([]);
@@ -16,7 +16,7 @@ export function usePagingStrategy() {
         setLoading(true);
         try {
             const res = await axiosInstance.get<Post[]>(
-                `/posts?strategy=paging&page=${page + 1}&size=${PAGE_SIZE}`
+                `/posts?strategy=paging&page=${page}&size=${PAGE_SIZE}`
             );
             if (res.data.length < PAGE_SIZE) {
                 setIsEnd(true);

@@ -8,13 +8,13 @@ type StrategyType = 'paging' | 'infinite';
 interface StrategyResult {
     posts: Post[];
     loadMore?: () => void;
-    targetRef?: RefObject<HTMLDivElement | null>;
+    targetRef?: ((node: HTMLDivElement | null) => void);
     loading: boolean;
     isEnd: boolean;
 }
 
 export function useLoadStrategy(strategy: StrategyType): StrategyResult {
-    // ✅ 항상 두 훅을 모두 호출
+    // ❗ 두 훅을 무조건 호출해야 함
     const paging = usePagingStrategy();
     const infinite = useInfiniteScroll();
 

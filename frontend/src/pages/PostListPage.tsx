@@ -12,7 +12,7 @@ const PostListPage: React.FC = () => {
         <>
             <StrategyToggle strategy={strategy} onChange={setStrategy} />
 
-            <Container maxWidth="sm" sx={{ paddingTop: 2 }}>
+            <Container maxWidth="sm" sx={{ paddingTop: 2 , minHeight: '100vh' }}>
                 {posts.map((post) => (
                     <PostCard key={post.id} post={post} />
                 ))}
@@ -26,8 +26,18 @@ const PostListPage: React.FC = () => {
                     </Box>
                 )}
 
-                {/* 무한스크롤 방식일 경우: 타겟 ref 요소 */}
-                {strategy === 'infinite' && <div ref={targetRef} style={{ height: 1 }} />}
+                {strategy === 'infinite' && (
+                    <>
+                        <div
+                            ref={targetRef}
+                            style={{
+                                height: 40,
+                                marginTop: 16,
+                            }}
+                        >
+                        </div>
+                    </>
+                )}
 
                 {/* 로딩 스피너 공통 */}
                 {loading && (
