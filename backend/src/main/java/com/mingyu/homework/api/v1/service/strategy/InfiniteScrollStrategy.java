@@ -1,6 +1,6 @@
 package com.mingyu.homework.api.v1.service.strategy;
 
-import com.mingyu.homework.api.v1.dto.response.PostResponseDto;
+import com.mingyu.homework.api.v1.dto.response.PostListResponseDto;
 import com.mingyu.homework.api.v1.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,10 +18,10 @@ public class InfiniteScrollStrategy implements LoadStrategy {
     private final PostRepository postRepository;
 
     @Override
-    public List<PostResponseDto> loadPosts(Pageable pageable) {
-        return postRepository.findAll(pageable)
+    public List<PostListResponseDto> loadPosts(Pageable pageable) {
+        return postRepository.findAllList(pageable)
                 .stream()
-                .map(PostResponseDto::fromEntity)
+                .map(PostListResponseDto::fromProjection)
                 .toList();
     }
 

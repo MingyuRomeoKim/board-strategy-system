@@ -1,6 +1,6 @@
 package com.mingyu.homework.unit.service;
 
-import com.mingyu.homework.api.v1.dto.response.PostResponseDto;
+import com.mingyu.homework.api.v1.dto.response.PostListResponseDto;
 import com.mingyu.homework.api.v1.repository.PostRepository;
 import com.mingyu.homework.api.v1.service.PostService;
 import com.mingyu.homework.support.PostDummyFactory;
@@ -31,14 +31,14 @@ public class PostServiceTest {
     @Test
     void 전략_기반_페이징_조회_성공() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<PostResponseDto> result = postService.getPosts("paging", pageable);
+        List<PostListResponseDto> result = postService.getPosts("paging", pageable);
         assertEquals(10, result.size());
     }
 
     @Test
     void 전략_기반_무한스크롤_조회_성공() {
         Pageable pageable = PageRequest.of(1, 20);
-        List<PostResponseDto> result = postService.getPosts("infinite", pageable);
+        List<PostListResponseDto> result = postService.getPosts("infinite", pageable);
         assertEquals(20, result.size());
     }
 }
