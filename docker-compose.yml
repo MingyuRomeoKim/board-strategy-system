@@ -8,7 +8,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - redis
+      - h2
     restart: unless-stopped
 
   frontend:
@@ -24,7 +27,7 @@ services:
   h2:
     image: oscarfonts/h2
     ports:
-      - "1521:1521"
+      - "51521:1521"
     environment:
       H2_OPTIONS: "-tcp -tcpAllowOthers -ifNotExists"
 
@@ -32,5 +35,5 @@ services:
     image: redis:latest
     container_name: redis
     ports:
-      - "6379:6379"
-    restart: always
+      - "56379:6379"
+    restart: unless-stopped

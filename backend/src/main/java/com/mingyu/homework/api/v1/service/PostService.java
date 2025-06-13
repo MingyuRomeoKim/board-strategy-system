@@ -5,6 +5,7 @@ import com.mingyu.homework.api.v1.dto.response.PostListResponseDto;
 import com.mingyu.homework.api.v1.entity.Post;
 import com.mingyu.homework.api.v1.repository.PostRepository;
 import com.mingyu.homework.api.v1.service.strategy.LoadStrategy;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,13 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    @Cacheable(value = "postListCache", key = "T(java.lang.String).format('%s:%d:%d', #strategyType, #pageable.pageNumber, #pageable.pageSize)")
     public List<PostListResponseDto> getPosts(String strategyType, Pageable pageable) {
         LoadStrategy strategy = strategyMap.getOrDefault(strategyType, strategyMap.get("paging"));
         return strategy.loadPosts(pageable);
     }
 
+    @Cacheable(value = "postDetailCache", key = "#postId")
     public PostDetailResponseDto getPostDetail(UUID postId) {
         Post post =  postRepository.findById(postId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "게시글 존재하지 않음."));
 
