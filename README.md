@@ -5,8 +5,8 @@
 ```shell
 
 git clone https://github.com/MingyuRomeoKim/board-strategy-system.git
-cd board-stategy-system
-docker-compose up -d
+cd board-strategy-system
+docker-compose up -d --build
 ```
 
 ## 프로젝트 설계
