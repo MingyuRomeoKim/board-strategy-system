@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import { Post } from '../types/post';
+import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 
 interface PostCardProps {
@@ -8,10 +9,16 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
+    const navigate = useNavigate();
+
+    const handleTitleClick = () => {
+        navigate(`/posts/${post.postId}`);
+    };
+
     return (
         <Card sx={{ marginBottom: 2 }}>
             <CardContent>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom onClick={handleTitleClick} sx={{ cursor: 'pointer', color: 'blue' }}>
                     {post.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" paragraph>

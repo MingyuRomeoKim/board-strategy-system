@@ -14,7 +14,7 @@ const PostListPage: React.FC = () => {
 
             <Container maxWidth="sm" sx={{ paddingTop: 2 , minHeight: '100vh' }}>
                 {posts.map((post) => (
-                    <PostCard key={post.id} post={post} />
+                    <PostCard key={post.postId} post={post} />
                 ))}
 
                 {/* 페이징 방식일 경우: 더보기 버튼 */}
