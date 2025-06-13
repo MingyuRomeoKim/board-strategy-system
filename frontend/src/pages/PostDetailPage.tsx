@@ -24,15 +24,19 @@ const PostDetailPage: React.FC = () => {
             try {
                 const res = await axiosInstance.get<Post>(`/posts/${postId}`);
                 setPost(res.data);
-            } catch (e) {
-                console.error('게시글 조회 실패', e);
+            } catch (e: any) {
+                if (e.response?.status === 404) {
+                    navigate('/404', { replace: true });
+                } else {
+                    console.error('게시글 조회 실패', e);
+                }
             } finally {
                 setLoading(false);
             }
         };
 
         fetchPost();
-    }, [postId]);
+    }, [postId, navigate]);
 
     if (loading) {
         return (
