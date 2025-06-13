@@ -1,9 +1,7 @@
 package com.mingyu.homework.api.v1.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
@@ -11,8 +9,10 @@ import java.util.UUID;
 
 @Getter
 @Entity
+@Builder
 @Table(name = "posts")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Post {
     @Id
     @Column(columnDefinition = "BINARY(16)")
