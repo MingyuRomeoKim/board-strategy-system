@@ -6,7 +6,7 @@ const PAGE_SIZE = 20;
 
 export function useInfiniteScroll() {
     const [posts, setPosts] = useState<Post[]>([]);
-    const [page, setPage] = useState(0);
+    const [cursor, setCursor] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
 
@@ -19,9 +19,11 @@ export function useInfiniteScroll() {
         setLoading(true);
 
         try {
-            const res = await axiosInstance.get<Post[]>(
-                `/posts?strategy=infinite&page=${page}&size=${PAGE_SIZE}`
-            );
+            const url = cursor 
+                ? `/posts?strategy=infinite&cursor=${cursor}&size=${PAGE_SIZE}`
+                : `/posts?strategy=infinite&size=${PAGE_SIZE}`;
+
+            const res = await axiosInstance.get<Post[]>(url);
 
             const newPosts = res.data;
 
@@ -29,14 +31,19 @@ export function useInfiniteScroll() {
                 setIsEnd(true);
             }
 
+            if (newPosts.length > 0) {
+                // Get the last post's ID to use as the next cursor
+                const lastPost = newPosts[newPosts.length - 1];
+                setCursor(lastPost.postId);
+            }
+
             setPosts((prev) => [...prev, ...newPosts]);
-            setPage((prev) => prev + 1);
         } catch (err) {
             console.error('🚨 게시글 로딩 실패:', err);
         } finally {
             setLoading(false);
         }
-    }, [page, loading, isEnd]);
+    }, [cursor, loading, isEnd]);
 
     useEffect(() => {
         loadMore(); // 첫 페이지 자동 로딩
