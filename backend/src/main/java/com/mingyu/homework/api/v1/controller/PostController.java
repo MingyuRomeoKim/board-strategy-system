@@ -5,6 +5,7 @@ import com.mingyu.homework.api.v1.dto.response.PostListResponseDto;
 import com.mingyu.homework.api.v1.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +26,7 @@ public class PostController {
     @GetMapping
     @Operation(summary = "게시글 리스트 조회", description = "게시글의 목록을 조회합니다. strategy가 'infinite'인 경우 cursor 파라미터를 사용하여 cursor-based pagination을 지원합니다.")
     public ResponseEntity<List<PostListResponseDto>> getPosts(
-            @RequestParam(defaultValue = "paging") String strategy,
+            @Valid @RequestParam(defaultValue = "paging") String strategy,
             @RequestParam(required = false) UUID cursor,
             Pageable pageable
     ) {

@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.server.ResponseStatusException;
+import com.mingyu.homework.error.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -65,6 +65,6 @@ public class PostServiceTest {
     @Test
     void 게시글_상세보기_조회_실패() {
         UUID invalidPostId = UUID.randomUUID();
-        assertThrows(ResponseStatusException.class, () -> postService.getPostDetail(invalidPostId));
+        assertThrows(ResourceNotFoundException.class, () -> postService.getPostDetail(invalidPostId));
     }
 }

@@ -9,7 +9,7 @@ Accept: application/json
 Content-Type: application/json
 
 ### 무한스크롤 방식으로 게시글 조회 (커서 사용)
-GET {{host}}/api/v1/posts?strategy=infinite&cursor=7f000001-9776-18ce-8197-7628d24503c0&size=20
+GET {{host}}/api/v1/posts?strategy=infinite&cursor=7f000001-9776-1e7e-8197-766e827403d4&size=20
 Accept: application/json
 Content-Type: application/json
 
