@@ -40,6 +40,8 @@ dependencies {
 	// Lombok
 	compileOnly("org.projectlombok:lombok")
 
+	// Actuator
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	annotationProcessor("org.projectlombok:lombok")
