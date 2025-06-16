@@ -1,10 +1,15 @@
 ### 페이징 방식으로 게시글 조회 (기본 전략)
-GET {{host}}/api/v1/posts?strategy=paging&page=1&size=10
+GET {{host}}/api/v1/posts?strategy=paging&page=0&size=10
 Accept: application/json
 Content-Type: application/json
 
-### 무한스크롤 방식으로 게시글 조회
-GET {{host}}/api/v1/posts?strategy=infinite&page=1&size=20
+### 무한스크롤 방식으로 게시글 조회 (첫 페이지)
+GET {{host}}/api/v1/posts?strategy=infinite&page=0&size=20
+Accept: application/json
+Content-Type: application/json
+
+### 무한스크롤 방식으로 게시글 조회 (커서 사용)
+GET {{host}}/api/v1/posts?strategy=infinite&cursor=7f000001-9776-18ce-8197-7628d24503c0&size=20
 Accept: application/json
 Content-Type: application/json
 

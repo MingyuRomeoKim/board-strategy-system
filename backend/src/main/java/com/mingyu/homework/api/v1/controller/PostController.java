@@ -23,12 +23,13 @@ public class PostController {
     public final PostService postService;
 
     @GetMapping
-    @Operation(summary = "게시글 리스트 조회", description = "게시글의 목록을 조회합니다.")
+    @Operation(summary = "게시글 리스트 조회", description = "게시글의 목록을 조회합니다. strategy가 'infinite'인 경우 cursor 파라미터를 사용하여 cursor-based pagination을 지원합니다.")
     public ResponseEntity<List<PostListResponseDto>> getPosts(
             @RequestParam(defaultValue = "paging") String strategy,
+            @RequestParam(required = false) UUID cursor,
             Pageable pageable
     ) {
-        List<PostListResponseDto> posts = postService.getPosts(strategy, pageable);
+        List<PostListResponseDto> posts = postService.getPosts(strategy, cursor, pageable);
         return ResponseEntity.ok(posts);
     }
 

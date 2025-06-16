@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class PagingStrategy implements LoadStrategy{
     private final PostRepository postRepository;
 
     @Override
-    public List<PostListResponseDto> loadPosts(Pageable pageable) {
+    public List<PostListResponseDto> loadPosts(UUID cursor, Pageable pageable) {
         return postRepository.findAllList(pageable)
                 .stream()
                 .map(PostListResponseDto::fromProjection)

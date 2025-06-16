@@ -5,11 +5,13 @@ import com.mingyu.homework.api.v1.dto.response.PostListResponseDto;
 import com.mingyu.homework.api.v1.entity.Post;
 import com.mingyu.homework.api.v1.repository.PostRepository;
 import com.mingyu.homework.api.v1.service.PostService;
+import com.mingyu.homework.config.TestCacheConfig;
 import com.mingyu.homework.support.PostDummyFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
@@ -22,10 +24,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Import(TestCacheConfig.class)
 public class PostServiceTest {
 
-    @Autowired PostRepository postRepository;
-    @Autowired PostService postService;
+    @Autowired
+    PostRepository postRepository;
+    @Autowired
+    PostService postService;
 
     private Post savedPost;
 
@@ -39,14 +44,14 @@ public class PostServiceTest {
     @Test
     void 전략_기반_페이징_조회_성공() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<PostListResponseDto> result = postService.getPosts("paging", pageable);
+        List<PostListResponseDto> result = postService.getPosts("paging", null, pageable);
         assertEquals(10, result.size());
     }
 
     @Test
     void 전략_기반_무한스크롤_조회_성공() {
-        Pageable pageable = PageRequest.of(1, 20);
-        List<PostListResponseDto> result = postService.getPosts("infinite", pageable);
+        Pageable pageable = PageRequest.of(0, 20);
+        List<PostListResponseDto> result = postService.getPosts("infinite", null, pageable);
         assertEquals(20, result.size());
     }
 

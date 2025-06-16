@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Component
@@ -18,8 +19,8 @@ public class InfiniteScrollStrategy implements LoadStrategy {
     private final PostRepository postRepository;
 
     @Override
-    public List<PostListResponseDto> loadPosts(Pageable pageable) {
-        return postRepository.findAllList(pageable)
+    public List<PostListResponseDto> loadPosts(UUID cursor, Pageable pageable) {
+        return postRepository.findPostsWithCursorPagination(cursor, pageable)
                 .stream()
                 .map(PostListResponseDto::fromProjection)
                 .toList();

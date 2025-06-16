@@ -29,10 +29,10 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    @Cacheable(value = "postListCache", key = "T(java.lang.String).format('%s:%d:%d', #strategyType, #pageable.pageNumber, #pageable.pageSize)")
-    public List<PostListResponseDto> getPosts(String strategyType, Pageable pageable) {
+    @Cacheable(value = "postListCache", key = "T(java.lang.String).format('%s:%s:%d:%d', #strategyType, #cursor, #pageable.pageNumber, #pageable.pageSize)")
+    public List<PostListResponseDto> getPosts(String strategyType, UUID cursor, Pageable pageable) {
         LoadStrategy strategy = strategyMap.getOrDefault(strategyType, strategyMap.get("paging"));
-        return strategy.loadPosts(pageable);
+        return strategy.loadPosts(cursor, pageable);
     }
 
     @Cacheable(value = "postDetailCache", key = "#postId")
