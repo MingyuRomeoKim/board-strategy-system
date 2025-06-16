@@ -36,7 +36,7 @@ public class PostController {
 
     @GetMapping("/{postId}")
     @Operation(summary = "게시글 상세 조회", description = "ID에 맞는 게시글을 상세조회 합니다.")
-    public ResponseEntity<PostDetailResponseDto> getPostDetail(@PathVariable @NotNull(message = "게시글 조회시 아이디는 필수입니다.") UUID postId) {
+    public ResponseEntity<PostDetailResponseDto> getPostDetail(@PathVariable @Valid @NotNull(message = "게시글 조회시 아이디는 필수입니다.") UUID postId) {
         return ResponseEntity.ok(postService.getPostDetail(postId));
     }
 
